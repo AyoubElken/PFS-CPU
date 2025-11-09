@@ -1,0 +1,159 @@
+# -------------------------
+# OS / Editor junk
+# -------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+*.orig
+tags
+TAGS
+
+.vscode/
+.idea/
+*.iml
+.sublime-*
+
+# -------------------------
+# Python (tests/tools)
+# -------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.eggs/
+*.egg-info/
+dist/
+build/
+htmlcov/
+.tox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+ENV/
+.python-version
+.coverage
+.coverage.*
+
+# -------------------------
+# Generic build/sim outputs
+# -------------------------
+/out/
+/build/
+/bin/
+/obj/
+/obj_dir/
+/sim_build/
+/generated/
+/logs/
+/results/
+*.log
+*.jou
+*.str
+*.out
+*.cache
+
+# -------------------------
+# Waveforms & debug dumps
+# -------------------------
+*.vcd
+*.fst
+*.lxt
+*.lxt2
+*.vpd
+*.fsdb
+*.wlf
+*.saif
+*.asdb
+*.awdb
+# If you want to commit saved GTKWave sessions, comment this:
+*.gtkw
+
+# -------------------------
+# Icarus Verilog
+# -------------------------
+*.vvp
+
+# -------------------------
+# Verilator
+# -------------------------
+obj_dir/
+coverage.dat
+verilator.log
+verilator_*_*.log
+
+# -------------------------
+# ModelSim / Questa
+# -------------------------
+work/
+transcript
+vsim.wlf
+wlf*
+# Uncomment to ignore local config:
+# modelsim.ini
+
+# -------------------------
+# Synopsys VCS
+# -------------------------
+csrc/
+simv*
+DVEfiles/
+ucli.key
+vc_hdrs.h
+urgReport/
+
+# -------------------------
+# Cadence Xcelium/Incisive
+# -------------------------
+xcelium.d/
+INCA_libs/
+xrun.history
+
+# -------------------------
+# Aldec Riviera/Active-HDL
+# -------------------------
+library/
+work.lib/
+riviera/
+
+# -------------------------
+# Xilinx Vivado (if used)
+# -------------------------
+.Xil/
+*.cache/
+*.runs/
+*.sim/
+*.hw/
+*.ip_user_files/
+*.jou
+*.log
+*.pb
+*.str
+*.xpr
+
+# -------------------------
+# C/C++ artifacts (e.g., Verilator builds)
+# -------------------------
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+*.lib
+*.exe
+*.d
+*.map
+
+# -------------------------
+# Firmware / memory images
+# Comment these if you want them tracked
+# -------------------------
+*.hex
+*.bin
+*.elf
