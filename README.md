@@ -29,7 +29,7 @@ The main objectives of this project are:
 - PFS-CPU/
   - README.md
   - LICENSE
-  - Dashboard
+  - Dashboard ([Static Dashboard - self mode](https://pfs25v13.netlify.app/))
   - .gitignore
   - Docs/
   - rtl/
@@ -69,6 +69,8 @@ The main objectives of this project are:
 ---
 
 ## 6-Week Timeline
+
+[Static Dashboard - self mode](https://pfs25v13.netlify.app/)
 
 ### Week 1 – Foundations and Planning
 **Members:** Person A, Person B  
