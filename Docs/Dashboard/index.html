@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RISC-V CPU Development Plan</title>
+    <!-- Cache-busting: bump version each deploy -->
+    <link rel="stylesheet" href="style.css?v=2025-11-05-10" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>RISC-V 32b CPU - Plan PFS</h1>
+        <p class="subtitle">6-Week Implementation Schedule</p>
+      </header>
+
+      <div class="card">
+        <h2>Project Overview</h2>
+        <p>
+          This plan outlines a structured 6-week development schedule for
+          building a RISC-V CPU in Verilog. The approach progresses from
+          single-cycle implementation to pipelined architecture (ila kad lwkt)
+          with testing at each stage.
+        </p>
+
+        <!-- KPI chips: compact, non-intrusive -->
+        <div class="kpi-chips" aria-live="polite">
+          <!-- Project Completion (auto from timeline tasks) -->
+          <div class="kpi-chip" data-kpi="completion">
+            <div class="kpi-vis">
+              <svg
+                class="micro-ring"
+                width="56"
+                height="56"
+                viewBox="0 0 56 56"
+                aria-hidden="true"
+              >
+                <circle class="ring-bg" cx="28" cy="28" r="24"></circle>
+                <circle class="ring-progress" cx="28" cy="28" r="24"></circle>
+              </svg>
+            </div>
+            <div class="kpi-body">
+              <div class="kpi-head">
+                <span class="kpi-title">Project Completion</span>
+                <span class="kpi-percent" data-kpi-percent>0%</span>
+              </div>
+              <div class="kpi-inputs">
+                <span class="kpi-hint" aria-hidden="true"
+                  >Auto from timeline tasks</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Module Test Pass Rate -->
+          <div class="kpi-chip" data-kpi="tests">
+            <div class="kpi-vis">
+              <svg
+                class="micro-ring"
+                width="56"
+                height="56"
+                viewBox="0 0 56 56"
+                aria-hidden="true"
+              >
+                <circle class="ring-bg" cx="28" cy="28" r="24"></circle>
+                <circle class="ring-progress" cx="28" cy="28" r="24"></circle>
+              </svg>
+            </div>
+            <div class="kpi-body">
+              <div class="kpi-head">
+                <span class="kpi-title">Module Test Pass Rate</span>
+                <span class="kpi-percent" data-kpi-percent>0%</span>
+              </div>
+              <div class="kpi-inputs">
+                <label class="sr-only" for="tests-passed">Tests passed</label>
+                <input
+                  id="tests-passed"
+                  class="input-mini input-passed"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  aria-label="Tests passed"
+                />
+                <span class="sep">/</span>
+                <label class="sr-only" for="tests-total">Total tests</label>
+                <input
+                  id="tests-total"
+                  class="input-mini input-total"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="0"
+                  aria-label="Total tests"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Coverage -->
+          <div class="kpi-chip" data-kpi="coverage">
+            <div class="kpi-vis">
+              <svg
+                class="micro-ring"
+                width="56"
+                height="56"
+                viewBox="0 0 56 56"
+                aria-hidden="true"
+              >
+                <circle class="ring-bg" cx="28" cy="28" r="24"></circle>
+                <circle class="ring-progress" cx="28" cy="28" r="24"></circle>
+              </svg>
+            </div>
+            <div class="kpi-body">
+              <div class="kpi-head">
+                <span class="kpi-title">Code Coverage</span>
+                <span class="kpi-percent" data-kpi-percent>0%</span>
+              </div>
+              <div class="kpi-inputs">
+                <input
+                  class="input-range coverage-range"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="0"
+                  aria-label="Code coverage slider"
+                />
+                <input
+                  class="input-mini coverage-number"
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="0"
+                  aria-label="Code coverage percent"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Team Roles & Responsibilities</h2>
+      <div class="team-grid">
+        <div class="member-card">
+          <div
+            class="member-name"
+            contenteditable="true"
+            data-member="A"
+            aria-label="Edit member name A"
+            tabindex="0"
+          >
+            Person A
+          </div>
+          <div class="member-role">Project Architect & Control Unit</div>
+          <p>
+            Oversees system design, module interfaces, and implements control
+            logic, instruction decoder.
+          </p>
+        </div>
+
+        <div class="member-card">
+          <div
+            class="member-name"
+            contenteditable="true"
+            data-member="B"
+            aria-label="Edit member name B"
+            tabindex="0"
+          >
+            Person B
+          </div>
+          <div class="member-role">ALU & Branch Unit</div>
+          <p>
+            Implements arithmetic/logic operations, branch comparison logic, and
+            data path components.
+          </p>
+        </div>
+
+        <div class="member-card">
+          <div
+            class="member-name"
+            contenteditable="true"
+            data-member="C"
+            aria-label="Edit member name C"
+            tabindex="0"
+          >
+            Person C
+          </div>
+          <div class="member-role">Instruction Fetch & Decode</div>
+          <p>
+            Handles program counter, instruction memory, and instruction
+            decoding logic.
+          </p>
+        </div>
+
+        <div class="member-card">
+          <div
+            class="member-name"
+            contenteditable="true"
+            data-member="D"
+            aria-label="Edit member name D"
+            tabindex="0"
+          >
+            Person D
+          </div>
+          <div class="member-role">Register File & Data Memory</div>
+          <p>
+            Implements 32x32 register file, data memory interface, and
+            load/store operations.
+          </p>
+        </div>
+
+        <div class="member-card">
+          <div
+            class="member-name"
+            contenteditable="true"
+            data-member="E"
+            aria-label="Edit member name E"
+            tabindex="0"
+          >
+            Person E
+          </div>
+          <div class="member-role">Verification & Testing</div>
+          <p>
+            Develops testbenches, test programs, and verification strategies for
+            all modules.
+          </p>
+        </div>
+
+        <div class="member-card">
+          <div
+            class="member-name"
+            contenteditable="true"
+            data-member="F"
+            aria-label="Edit member name F"
+            tabindex="0"
+          >
+            Person F
+          </div>
+          <div class="member-role">Toolchain & Infrastructure</div>
+          <p>
+            Manages development environment, toolchain setup, and continuous
+            integration.
+          </p>
+        </div>
+      </div>
+
+      <h2>6-Week Development Timeline</h2>
+
+      <!-- Team completion summary (auto from timeline task toggles) -->
+      <div class="team-summary" aria-live="polite">
+        <div class="micro-section-title">Team completion summary</div>
+        <div class="team-summary-chips">
+          <div class="summary-chip" data-person="A">
+            <svg
+              class="nano-ring"
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              aria-hidden="true"
+            >
+              <circle class="ring-bg" cx="22" cy="22" r="18"></circle>
+              <circle class="ring-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <div class="summary-body">
+              <span class="summary-name"
+                ><span class="ref-member" data-ref-member="A"
+                  >Person A</span
+                ></span
+              >
+              <span class="summary-percent" data-summary-percent>0%</span>
+            </div>
+          </div>
+          <div class="summary-chip" data-person="B">
+            <svg
+              class="nano-ring"
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              aria-hidden="true"
+            >
+              <circle class="ring-bg" cx="22" cy="22" r="18"></circle>
+              <circle class="ring-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <div class="summary-body">
+              <span class="summary-name"
+                ><span class="ref-member" data-ref-member="B"
+                  >Person B</span
+                ></span
+              >
+              <span class="summary-percent" data-summary-percent>0%</span>
+            </div>
+          </div>
+          <div class="summary-chip" data-person="C">
+            <svg
+              class="nano-ring"
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              aria-hidden="true"
+            >
+              <circle class="ring-bg" cx="22" cy="22" r="18"></circle>
+              <circle class="ring-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <div class="summary-body">
+              <span class="summary-name"
+                ><span class="ref-member" data-ref-member="C"
+                  >Person C</span
+                ></span
+              >
+              <span class="summary-percent" data-summary-percent>0%</span>
+            </div>
+          </div>
+          <div class="summary-chip" data-person="D">
+            <svg
+              class="nano-ring"
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              aria-hidden="true"
+            >
+              <circle class="ring-bg" cx="22" cy="22" r="18"></circle>
+              <circle class="ring-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <div class="summary-body">
+              <span class="summary-name"
+                ><span class="ref-member" data-ref-member="D"
+                  >Person D</span
+                ></span
+              >
+              <span class="summary-percent" data-summary-percent>0%</span>
+            </div>
+          </div>
+          <div class="summary-chip" data-person="E">
+            <svg
+              class="nano-ring"
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              aria-hidden="true"
+            >
+              <circle class="ring-bg" cx="22" cy="22" r="18"></circle>
+              <circle class="ring-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <div class="summary-body">
+              <span class="summary-name"
+                ><span class="ref-member" data-ref-member="E"
+                  >Person E</span
+                ></span
+              >
+              <span class="summary-percent" data-summary-percent>0%</span>
+            </div>
+          </div>
+          <div class="summary-chip" data-person="F">
+            <svg
+              class="nano-ring"
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              aria-hidden="true"
+            >
+              <circle class="ring-bg" cx="22" cy="22" r="18"></circle>
+              <circle class="ring-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <div class="summary-body">
+              <span class="summary-name"
+                ><span class="ref-member" data-ref-member="F"
+                  >Person F</span
+                ></span
+              >
+              <span class="summary-percent" data-summary-percent>0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <!-- Week 1 -->
+        <div class="week-container">
+          <div class="week-label">Week 1</div>
+          <div class="week-content">
+            <h3>Foundation & Specification</h3>
+            <p>
+              Establish development environment and finalize CPU specifications.
+            </p>
+
+            <div class="task-grid">
+              <div class="task-card person-F">
+                <strong
+                  ><span class="ref-member" data-ref-member="F">Person F</span
+                  >:</strong
+                >
+                Set up Verilog simulator, RISC-V toolchain
+                <div class="person-task">
+                  Deliverable: Working development environment
+                </div>
+              </div>
+              <div class="task-card person-A">
+                <strong
+                  ><span class="ref-member" data-ref-member="A">Person A</span
+                  >:</strong
+                >
+                Define module interfaces, control signals
+                <div class="person-task">Deliverable: System block diagram</div>
+              </div>
+              <div class="task-card person-E">
+                <strong
+                  ><span class="ref-member" data-ref-member="E">Person E</span
+                  >:</strong
+                >
+                Create basic testbench framework
+                <div class="person-task">Deliverable: Testbench skeleton</div>
+              </div>
+              <div class="task-card person-B">
+                <strong
+                  ><span class="ref-member" data-ref-member="B">Person B</span>,
+                  <span class="ref-member" data-ref-member="C">Person C</span>,
+                  <span class="ref-member" data-ref-member="D">Person D</span
+                  >:</strong
+                >
+                Research RV32I instruction set
+                <div class="person-task">Deliverable: Instruction set spec</div>
+              </div>
+            </div>
+
+            <div class="deliverables">
+              <strong>Week 1 Deliverables:</strong>
+              <ul>
+                <li>Development environment setup</li>
+                <li>Complete system block diagram</li>
+                <li>Instruction set specification document</li>
+                <li>Module interface definitions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="week-container">
+          <div class="week-label">Week 2</div>
+          <div class="week-content">
+            <h3>Core Module Development</h3>
+            <p>Implement and individually test major CPU components.</p>
+
+            <div class="task-grid">
+              <div class="task-card person-D">
+                <strong
+                  ><span class="ref-member" data-ref-member="D">Person D</span
+                  >:</strong
+                >
+                Implement 32x32 register file
+                <div class="person-task">
+                  Deliverable: Working register file module
+                </div>
+              </div>
+              <div class="task-card person-B">
+                <strong
+                  ><span class="ref-member" data-ref-member="B">Person B</span
+                  >:</strong
+                >
+                Build ALU with basic operations
+                <div class="person-task">
+                  Deliverable: ALU supporting 10+ operations
+                </div>
+              </div>
+              <div class="task-card person-C">
+                <strong
+                  ><span class="ref-member" data-ref-member="C">Person C</span
+                  >:</strong
+                >
+                Implement instruction fetch unit
+                <div class="person-task">
+                  Deliverable: PC and instruction memory
+                </div>
+              </div>
+              <div class="task-card person-A">
+                <strong
+                  ><span class="ref-member" data-ref-member="A">Person A</span
+                  >:</strong
+                >
+                Design control unit structure
+                <div class="person-task">
+                  Deliverable: Control signal definitions
+                </div>
+              </div>
+              <div class="task-card person-E">
+                <strong
+                  ><span class="ref-member" data-ref-member="E">Person E</span
+                  >:</strong
+                >
+                Develop module testbenches
+                <div class="person-task">
+                  Deliverable: Individual module tests
+                </div>
+              </div>
+            </div>
+
+            <div class="deliverables">
+              <strong>Week 2 Deliverables:</strong>
+              <ul>
+                <li>Register file module with tests</li>
+                <li>ALU module with tests</li>
+                <li>Instruction fetch unit</li>
+                <li>Control unit structure</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="week-container">
+          <div class="week-label">Week 3</div>
+          <div class="week-content">
+            <h3>Module Completion & Integration Prep</h3>
+            <p>Finish all core modules and prepare for system integration.</p>
+
+            <div class="task-grid">
+              <div class="task-card person-A">
+                <strong
+                  ><span class="ref-member" data-ref-member="A">Person A</span
+                  >:</strong
+                >
+                Complete control unit implementation
+                <div class="person-task">Deliverable: Full control unit</div>
+              </div>
+              <div class="task-card person-B">
+                <strong
+                  ><span class="ref-member" data-ref-member="B">Person B</span
+                  >:</strong
+                >
+                Implement branch unit
+                <div class="person-task">
+                  Deliverable: Branch comparison logic
+                </div>
+              </div>
+              <div class="task-card person-C">
+                <strong
+                  ><span class="ref-member" data-ref-member="C">Person C</span
+                  >:</strong
+                >
+                Build instruction decoder
+                <div class="person-task">Deliverable: Complete decoder</div>
+              </div>
+              <div class="task-card person-D">
+                <strong
+                  ><span class="ref-member" data-ref-member="D">Person D</span
+                  >:</strong
+                >
+                Implement data memory unit
+                <div class="person-task">Deliverable: Load/store handling</div>
+              </div>
+              <div class="task-card person-E">
+                <strong
+                  ><span class="ref-member" data-ref-member="E">Person E</span
+                  >:</strong
+                >
+                Create integration test plan
+                <div class="person-task">Deliverable: System test strategy</div>
+              </div>
+            </div>
+
+            <div class="deliverables">
+              <strong>Week 3 Deliverables:</strong>
+              <ul>
+                <li>Complete control unit</li>
+                <li>Branch and jump unit</li>
+                <li>Instruction decoder</li>
+                <li>Data memory interface</li>
+                <li>Integration test plan</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="week-container">
+          <div class="week-label">Week 4</div>
+          <div class="week-content">
+            <h3>System Integration</h3>
+            <p>Connect all modules into a working single-cycle CPU.</p>
+
+            <div class="task-grid">
+              <div class="task-card person-A">
+                <strong
+                  ><span class="ref-member" data-ref-member="A">Person A</span
+                  >:</strong
+                >
+                Lead integration effort
+                <div class="person-task">Deliverable: Integrated CPU</div>
+              </div>
+              <div class="task-card person-B">
+                <strong
+                  ><span class="ref-member" data-ref-member="B">Person B</span>,
+                  <span class="ref-member" data-ref-member="C">Person C</span>,
+                  <span class="ref-member" data-ref-member="D">Person D</span
+                  >:</strong
+                >
+                Fix module interface issues
+                <div class="person-task">Deliverable: Working data paths</div>
+              </div>
+              <div class="task-card person-E">
+                <strong
+                  ><span class="ref-member" data-ref-member="E">Person E</span
+                  >:</strong
+                >
+                Run integration tests
+                <div class="person-task">
+                  Deliverable: Basic instruction tests
+                </div>
+              </div>
+              <div class="task-card person-F">
+                <strong
+                  ><span class="ref-member" data-ref-member="F">Person F</span
+                  >:</strong
+                >
+                Set up automated builds
+                <div class="person-task">Deliverable: CI pipeline</div>
+              </div>
+            </div>
+
+            <div class="deliverables">
+              <strong>Week 4 Deliverables:</strong>
+              <ul>
+                <li>Fully integrated single-cycle CPU</li>
+                <li>Basic instruction execution</li>
+                <li>Automated build system</li>
+                <li>Integration test results</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 5 -->
+        <div class="week-container">
+          <div class="week-label">Week 5</div>
+          <div class="week-content">
+            <h3>Verification & Pipelining</h3>
+            <p>
+              Thorough testing and begin pipelined architecture implementation.
+            </p>
+
+            <div class="task-grid">
+              <div class="task-card person-E">
+                <strong
+                  ><span class="ref-member" data-ref-member="E">Person E</span
+                  >:</strong
+                >
+                Comprehensive CPU testing
+                <div class="person-task">Deliverable: Test coverage report</div>
+              </div>
+              <div class="task-card person-A">
+                <strong
+                  ><span class="ref-member" data-ref-member="A">Person A</span
+                  >:</strong
+                >
+                Design 5-stage pipeline
+                <div class="person-task">Deliverable: Pipeline diagram</div>
+              </div>
+              <div class="task-card person-B">
+                <strong
+                  ><span class="ref-member" data-ref-member="B">Person B</span>,
+                  <span class="ref-member" data-ref-member="C">Person C</span
+                  >:</strong
+                >
+                Implement pipeline registers
+                <div class="person-task">
+                  Deliverable: Pipeline stage separation
+                </div>
+              </div>
+              <div class="task-card person-D">
+                <strong
+                  ><span class="ref-member" data-ref-member="D">Person D</span
+                  >:</strong
+                >
+                Research hazard detection
+                <div class="person-task">
+                  Deliverable: Hazard mitigation plan
+                </div>
+              </div>
+            </div>
+
+            <div class="deliverables">
+              <strong>Week 5 Deliverables:</strong>
+              <ul>
+                <li>Comprehensive test suite</li>
+                <li>Pipeline architecture design</li>
+                <li>Pipeline stage implementation</li>
+                <li>Hazard detection strategy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 6 -->
+        <div class="week-container">
+          <div class="week-label">Week 6</div>
+          <div class="week-content">
+            <h3>Final Integration & Demo</h3>
+            <p>Complete working CPU with demonstration programs.</p>
+
+            <div class="task-grid">
+              <div class="task-card person-A">
+                <strong
+                  ><span class="ref-member" data-ref-member="A">Person A</span
+                  >:</strong
+                >
+                Final system integration
+                <div class="person-task">
+                  Deliverable: Working pipelined CPU
+                </div>
+              </div>
+              <div class="task-card person-B">
+                <strong
+                  ><span class="ref-member" data-ref-member="B">Person B</span>,
+                  <span class="ref-member" data-ref-member="C">Person C</span
+                  >:</strong
+                >
+                Implement forwarding unit
+                <div class="person-task">Deliverable: Hazard resolution</div>
+              </div>
+              <div class="task-card person-E">
+                <strong
+                  ><span class="ref-member" data-ref-member="E">Person E</span
+                  >:</strong
+                >
+                Create demo programs
+                <div class="person-task">Deliverable: Impressive CPU demos</div>
+              </div>
+              <div class="task-card person-D">
+                <strong
+                  ><span class="ref-member" data-ref-member="D">Person D</span>,
+                  <span class="ref-member" data-ref-member="F">Person F</span
+                  >:</strong
+                >
+                Final documentation
+                <div class="person-task">
+                  Deliverable: Complete project docs
+                </div>
+              </div>
+            </div>
+
+            <div class="deliverables">
+              <strong>Week 6 Deliverables:</strong>
+              <ul>
+                <li>Fully functional RISC-V CPU</li>
+                <li>Demo programs showcasing capabilities</li>
+                <li>Complete project documentation</li>
+                <li>Final presentation materials</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-diagram">
+        <h2>CPU Module Architecture</h2>
+        <p>
+          The RISC-V CPU follows a standard Harvard architecture with separate
+          instruction and data memory:
+        </p>
+
+        <div class="module-grid">
+          <div class="module-card">
+            <h4>Instruction Fetch</h4>
+            <p>
+              Program Counter<br />Instruction Memory<br />Branch Prediction
+            </p>
+            <div class="person-task">
+              <span class="ref-member" data-ref-member="C">Person C</span>
+            </div>
+          </div>
+
+          <div class="module-card">
+            <h4>Instruction Decode</h4>
+            <p>
+              Register File Read<br />Immediate Generation<br />Control Signals
+            </p>
+            <div class="person-task">
+              <span class="ref-member" data-ref-member="A">Person A</span> &amp;
+              <span class="ref-member" data-ref-member="D">Person D</span>
+            </div>
+          </div>
+
+          <div class="module-card">
+            <h4>Execution</h4>
+            <p>
+              ALU Operations<br />Branch Comparisons<br />Address Calculation
+            </p>
+            <div class="person-task">
+              <span class="ref-member" data-ref-member="B">Person B</span>
+            </div>
+          </div>
+
+          <div class="module-card">
+            <h4>Memory Access</h4>
+            <p>Data Memory<br />Load/Store Operations<br />Memory Alignment</p>
+            <div class="person-task">
+              <span class="ref-member" data-ref-member="D">Person D</span>
+            </div>
+          </div>
+
+          <div class="module-card">
+            <h4>Write Back</h4>
+            <p>
+              Register File Write<br />Result Selection<br />Pipeline Registers
+            </p>
+            <div class="person-task">
+              <span class="ref-member" data-ref-member="A">Person A</span> &amp;
+              <span class="ref-member" data-ref-member="D">Person D</span>
+            </div>
+          </div>
+
+          <div class="module-card">
+            <h4>Control Unit</h4>
+            <p>
+              Instruction Decoding<br />Control Signals<br />Hazard Detection
+            </p>
+            <div class="person-task">
+              <span class="ref-member" data-ref-member="A">Person A</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Key Success Factors</h2>
+        <div class="task-grid">
+          <div class="task-card">
+            <h4>Weekly Integration</h4>
+            <p>
+              Hold at least 2 team sync-ups per week nchallah to ensure modules
+              work together
+            </p>
+          </div>
+          <div class="task-card">
+            <h4>Interface First</h4>
+            <p>
+              Define all module interfaces in Week 1 and maintain consistency
+            </p>
+          </div>
+          <div class="task-card">
+            <h4>Test-Driven</h4>
+            <p>Write tests before/during implementation for each module</p>
+          </div>
+          <div class="task-card">
+            <h4>Version Control</h4>
+            <p>we'll setup a git repo</p>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>Koulxi is up for discussion</p>
+      </footer>
+    </div>
+
+    <!-- Cache-busting: bump version each deploy -->
+    <script src="script.js?v=2025-11-05-10" defer></script>
+  </body>
+</html>
