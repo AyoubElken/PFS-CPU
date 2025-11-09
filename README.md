@@ -27,28 +27,31 @@ The main objectives of this project are:
 ## Project Structure
 
 - PFS-CPU/
-  - [README.md](README.md)
-  - [LICENSE](LICENSE)
-  - [.gitignore](.gitignore)
-  - [Docs/](Docs/)
-  - [rtl/](rtl/)
-    - [CPU/](rtl/CPU/)
-      - [riscv_cpu.v](rtl/CPU/riscv_cpu.v) — Top CPU module
-      - [pc.v](rtl/CPU/pc.v) — Program Counter
-      - [alu.v](rtl/CPU/alu.v) — ALU
-      - [register_file.v](rtl/CPU/register_file.v) — Register file
-      - [control_unit.v](rtl/CPU/control_unit.v) — Control Unit
-    - [Memory/](rtl/Memory/)
-      - [instruction_memory.v](rtl/Memory/instruction_memory.v)
-      - [data_memory.v](rtl/Memory/data_memory.v)
-  - [Tsb_Bench/](Tsb_Bench/)
-    - [cpu_tb.v](Tsb_Bench/cpu_tb.v) — Top CPU testbench
-    - [alu_tb.v](Tsb_Bench/alu_tb.v) — ALU testbench
-    - [memory_tb.v](Tsb_Bench/memory_tb.v) — Memory testbench
-  - [sim/](sim/)
-    - [run_sim.sh](sim/run_sim.sh) — Simulation script
-  - [tools/](tools/) — Helper scripts
-  - [tests/](tests/) — Optional test programs for CPU sim (.py...)
+  - README.md
+  - LICENSE
+  - Dashboard
+  - .gitignore
+  - Docs/
+  - rtl/
+    - CPU/
+      - riscv_cpu.v — Top CPU module
+      - pc.v — Program Counter
+      - alu.v — ALU
+      - register_file.v — Register file
+      - control_unit.v — Control Unit
+    - Memory/
+      - instruction_memory.v
+      - data_memory.v
+  - Tsb_Bench/
+    - cpu_tb.v — Top CPU testbench
+    - alu_tb.v — ALU testbench
+    - memory_tb.v — Memory testbench
+  - sim/
+    - run_sim.sh — Simulation script
+  - tools/ — Helper scripts
+  - tests/ — Optional test programs for CPU sim (.py...)
+
+
 
 ---
 
