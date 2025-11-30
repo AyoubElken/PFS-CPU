@@ -81,7 +81,7 @@ The main objectives of this project are:
 - Deliverables: Environment ready, system block diagram, instruction set documentation.
 
 ### Week 2 – Core Module Implementation
-**Members:** Person A, Person D  
+**Members:** Person A, Person D, Person B 
 - Implement the ALU and test it with multiple operations.  
 - Build the Register File and test read/write operations.  
 - Develop the Instruction Fetch module including the program counter.  
@@ -97,14 +97,14 @@ The main objectives of this project are:
 - Deliverables: Fully implemented modules ready for integration.
 
 ### Week 4 – Integration of Modules
-**Members:** Person A, Person D  
+**Members:** Person A, Person D, Person E  
 - Connect all modules to form a single-cycle CPU.  
 - Run basic instruction tests to ensure correct operation.  
 - Set up automated build scripts and simulation pipelines.  
 - Deliverables: Integrated CPU with initial verification tests.
 
 ### Week 5 – Pipelining and Hazard Handling
-**Members:** Person B  
+**Members:** Person B, Person E 
 - Implement a 5-stage pipeline: IF, ID, EX, MEM, WB.  
 - Add hazard detection and forwarding units to avoid pipeline stalls.  
 - Perform full testbench simulations including pipeline scenarios.  
